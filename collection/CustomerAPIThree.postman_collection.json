@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "fb73f288-27cd-4fc8-964e-b2c8320b0506",
+		"name": "CustomerAPIThree",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19624236"
+	},
+	"item": [
+		{
+			"name": "Customer Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   //Test Tab r kaj hocche response r value take fetch kora\r",
+							"   \r",
+							"    var jsonData = pm.response.json();\r",
+							"//jehetu shudu response nie kaj korbo tai pm.response.json ke rakhi\r",
+							"//amader response a token r jei value ta peyeche\r",
+							"//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbG1hbiIsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE2NTQwOTIyMTUsImV4cCI6MTY1NDA5NDAxNX0.RRvIxzHW0xaiZdcx0Hr5LG6tmQYrEZMKpBRg3UHeB-M\r",
+							"//ai value ta ache--- var jsonData variable r moddhe.\r",
+							"    var getToken = jsonData.token;\r",
+							"//jsonData.token; aikhane\"token\" theke value ta storeToken a anlam\r",
+							"//Akohn variable --jsonData te jei token ta store chilo\r",
+							"//shei token ta ami --storeToken variable a rakhbo\r",
+							"//Akhon ai token ta amra environment a  store korbo\r",
+							"    pm.environment.set(\"newToken\",getToken);\r",
+							"//prothome jei name set korteci sheita\r",
+							"//tarpor jeikhan thek value na anteci\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n \"username\":\"salman\", \r\n \"password\":\"salman1234\" \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/login",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Login Wrong Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 401-Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Username or password incorrect\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error.message).to.eql(\"Username or password incorrect\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n \"username\":\"salman\", \r\n \"password\":\"salman12345\" \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/login",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check First Index Customer ID\", function () {\r",
+							"    //jokhon akta method r bhitore akta function ke argument\r",
+							"    //hishebe pass kora hoi tokhon ta hoi call back function\r",
+							"    //()=> aitake arrow function bole\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.Customers[0].id).to.eql(101);\r",
+							"});\r",
+							"pm.test(\"Check First Index Customer Phone Number\", function () {\r",
+							"    //pm.test akta function,aikhane first parameter a amr test name likhte hobe,\r",
+							"    //abing 2nd parameter a akta function argument hishebe pass korte hbe\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.Customers[0].phone_number).to.eql(\"01502020110\");\r",
+							"});\r",
+							"\r",
+							"//-----------------------\r",
+							"\r",
+							"//Json value check select korbo\r",
+							"//\"Your test name\"--Aitai hocche test case-ami ki test korte cachhi\r",
+							"//snippets r nam hocche json value check\r",
+							"//json r bhitore jdi kono akta value jdi ashe\r",
+							"//ba amr expected result r sathe match kore tahole bujhte parbo\r",
+							"//amr resut ta thik ache\r",
+							"//----------------------------------//\r",
+							"// pm.test(\"Fetch Customer List\", function () {\r",
+							"    // var jsonData = pm.response.json();\r",
+							"    // //---pm.response.json();--Postman r jei response ta ache \r",
+							"    // //---sheita json format a ache----\r",
+							"    // //abong response ta pawar por ami--jsonData--variable a\r",
+							"    // //shei response ta rekhechi\r",
+							"    // //amar jei whole response ta asche customer list ar\r",
+							"    // //whole response ta --(jsonData)-r moddhe rakha hoeche\r",
+							"\r",
+							"    // pm.expect(jsonData.Customers[0].id).to.eql(101);\r",
+							"\r",
+							"    //jsdonData.Customers--Aikhane Customer node r properties\r",
+							"    //r sathe match korbo tai customer diechi\r",
+							"    //tarpor jei customer r properties r sathe match korbo\r",
+							"    //tar array r index no dibo--aikhane 0 no index a ache\r",
+							"    //id diye match korbo---abong jei id no ta ami accept korteci\r",
+							"    //shei id no ta dibo\r",
+							"// });\r",
+							"// pm.test(\"Status code is 200\", function () {//function(),,()=> duibhabe\r",
+							"//     //likha jai ()=> aita hocche call back function duitai same jinish\r",
+							"//     pm.response.to.have.status(200);\r",
+							"//     //jokhon akta method r bhitore akta function ke argument hishebe\r",
+							"//     //pass kora hoi tokhon take callback function bole.\r",
+							"// });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/list",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Search API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check Correct Customer ID\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(101);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/get/101",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"get",
+						"101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Customer By Random number",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"let id =_.random(300,600);\r",
+							"pm.environment.set(\"id\",id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"New Customer is Created Successfully\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql('Success');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{id}},\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"phone_number\": \"{{$randomPhoneNumber}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/create",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Customer From Website Random number Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let id=_.random(900, 999)\r",
+							"//random id generate korar method\r",
+							"//then minimum  and maximum range\r",
+							"pm.environment.set(\"id\",id );\r",
+							"//\r",
+							"//aikhane \"id\" hocche key(string)-variable abong ,id hocche value\r",
+							"//jei \"ID\" ta generate hoise sheita set korbo \"id\" key r against a\r",
+							"const reqObject = {//object create kora hoise\r",
+							"//aikhane key,value pair obosthai thake\r",
+							"//amra reqObject r moddhe ai jinishgulo rekhechi\r",
+							"//External website theke customer ke generate korlam\r",
+							"url: 'https://API.namefake.com/english-united-states/male/',\r",
+							"method: 'GET',\r",
+							"\r",
+							"header: 'Content-Type:application/json'\r",
+							"    //jehetu amader content type JSON-tai json dea hoeche.\r",
+							"//amra header r moddhe diye--key abong value pair take pathabo\r",
+							"//postman ai content-type ke header r moddho die pathaia rakhse\r",
+							"//kintu amra jehetu external akta API ke postman a code r \r",
+							"//maddhome call korbo,tai content type ke akhane pass korte hoise\r",
+							"\r",
+							"};\r",
+							"//aikhane (amra jei reqObject create korechi sheitake sendRequest method r maddhome pass kortesi)\r",
+							"//sendRequest Postman r akta method\r",
+							"//(err, res) => aita call back function,( => aita arrow function)\r",
+							"pm.sendRequest(reqObject, (err, res) => {\r",
+							"//akhane jei jei info amr dorkar shei shei info store korbo\r",
+							"let {name} = res.json()\r",
+							"//aikhane res.json() a amar ja kichu ashbe,sekhan theke jeita jeita dorkar ta amara fetch kore nie ashbo,\r",
+							"//prothome---\"name\"\r",
+							"let {phone_w}=res.json()\r",
+							"//Aikhane Response take GET kortesi,abong response take\r",
+							"//individual protekta properties r Object r moddhe rakhtesi\r",
+							"let {email_u} = res.json()\r",
+							"//Aikhane URL theke jei response ta ashtese shei \r",
+							"//Response ta GET kortesi,abong shei response take\\\r",
+							"//individual prottekta properties r Object--[let {email_u}]--\r",
+							"// r moddhe rakhtesi\r",
+							"let email=email_u+'@test.com'\r",
+							"//amader info genarate kora shes \r",
+							"       //-----akhon------//\r",
+							"\r",
+							"//akhon info gula postman r moddhe save korbo\r",
+							"//amader environment r moddhe save korbo--mane\r",
+							"//amra jei environment create korechi sheikhane save korbo\r",
+							"//jeikhane baseURL abong Token ta save kore rekhechi sheikhane\r",
+							"pm.environment.set(\"name\", name);\r",
+							"pm.environment.set(\"email\", email);\r",
+							"pm.environment.set(\"phone_number\", phone_w);\r",
+							"\r",
+							"//ami bole dissi kon website ke call korbe--oikhan theke\r",
+							"//data ta pull korbo\r",
+							"//abong kon method follow korbe--GET Method\r",
+							"//Content type--Applictaion.json bole disi.\r",
+							"        //---------------//\r",
+							"//Call korar por,jei data gula generate hocche\r",
+							"//tarpor shei generated data ta---ami GET kortesi\r",
+							"//get kore ami individual prottekta properties r \r",
+							"//moddhe rakhtesi\r",
+							"//------------\r",
+							"//Tarpor --pm.environment.set(\"\", ) --ar maddhome amr environment variable ar moddhe save ba set kortesi.\r",
+							"//Tarpor seitake ami BODY r moddhe pass kortesi\r",
+							"//Tarpor ami response ar moddhe ami shei data ke dekhte partesi\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"New Customer is Created Successfully\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql('Success');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{id}},\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"phone_number\": \"{{$randomPhoneNumber}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/create",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Info Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check 'Success' message in Response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql('Success');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Checking Info is updated or not\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"     pm.expect(jsonData.Customers.name).includes('Ash');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"id\": 101,\r\n            \"name\": \"Mr. Ash\",\r\n            \"email\": \"mrkamal@test.com\",\r\n            \"address\": \"Gulshan,Dhaka\",\r\n            \"phone_number\": \"01502020110\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/update/101",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"update",
+						"101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Customer deleted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Customer deleted!\");\r",
+							"//Prottekbar jate amk Parameter a --id-- r value pass korte\r",
+							"//na hoi shei jonno ami id ke dynamic kore nisi\r",
+							"//--------=========--------========--------========\r",
+							"//akhon prottekbar jei random id ta create hobe shei id tai delete hoe jabe\r",
+							"//Jodi amk specific id ke delete korte hoi tahole obosshoi amk\r",
+							"//parameter a id r value Pass korte hobe\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{newToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/customer/api/v1/delete/{{id}}\n",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"customer",
+						"api",
+						"v1",
+						"delete",
+						"{{id}}\n"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
